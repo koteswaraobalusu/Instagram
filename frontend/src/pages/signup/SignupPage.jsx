@@ -7,6 +7,7 @@ import FormButton from '../../components/formButtons/FormButton';
 
 
 const SignupPage = () => {
+  
   return (
     <div className='container'>
          
@@ -27,7 +28,18 @@ const SignupPage = () => {
             </div>
 
             <FormButton value="Sign up"/>
+
+            <div className="user-verify">
+
+              <div className='form-field'>
+                <input type='text' autoComplete='off' required/>
+                <label htmlFor=''>OTP</label>
+              </div>
+              <FormButton value="User verification"/>
+            </div>
           </form>
+
+          
 
           <p>Already have an account? <Link to='/login'>Log in</Link></p>
         </div>
