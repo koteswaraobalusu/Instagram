@@ -7,6 +7,8 @@ from .models import EmailOTP
 from django.core.mail import EmailMultiAlternatives
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.utils import timezone
+import datetime
 # Create your views here.
 class RequestOTPAPIView(APIView):
 
@@ -33,7 +35,7 @@ class RequestOTPAPIView(APIView):
             msg.send()
 
             request.session['pending_user'] = {'email': email, 'password': password } # store password temporarily
-            return Response({"msg": "OTP sent to email"}, status=200)
+            return Response({"msg": "OTP sent to email"}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 class RegisterVerifyOTPAPIView(APIView):
@@ -49,7 +51,14 @@ class RegisterVerifyOTPAPIView(APIView):
                 return Response({"error": "No OTP request found"}, status=status.HTTP_400_BAD_REQUEST)
             
             if otp_obj.otp != otp:
-                return Response({"error": "Invalid OTP"}, status=400)
+                return Response({"error": "Invalid OTP"}, status=status.HTTP_400_BAD_REQUEST) 
+            if timezone.now()-otp_obj.created_at()>datetime.timedelta(minutes=5):
+                response=Response({"error": "OTP is expired"}, status=status.HTTP_400_BAD_REQUEST)
+                otp_obj.delete()
+                del request.session['pending_user']
+                return response
+
+
 
             pending_user = request.session.get('pending_user')
             if not pending_user or pending_user.get('email') != email:
