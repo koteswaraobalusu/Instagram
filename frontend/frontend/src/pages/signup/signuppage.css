@@ -3,14 +3,13 @@
     align-items: center;
     justify-content: center;
 }
-.login{
+.signup{
     width: 400px;
     background: #fff;
     min-height: 500px;
     padding: 20px;
-    /* border: 2px solid rgba(0,0,0,0.4); */
 }
-.login h1{
+.signup h1{
     text-align: center;
     margin: 20px;
 }
@@ -38,7 +37,7 @@
     left: 20px;
     
 }
-.login p{
+.signup p{
     margin: 20px;
     text-align: center;
     color: rgba(0,0,0,0.7) ;
