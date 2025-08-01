@@ -8,7 +8,7 @@
     background: #fff;
     min-height: 500px;
     padding: 20px;
-    border: 2px solid rgba(0,0,0,0.4);
+    /* border: 2px solid rgba(0,0,0,0.4); */
 }
 .login h1{
     text-align: center;
@@ -38,7 +38,7 @@
     left: 20px;
     
 }
-.login p{
+.link-to{
     margin: 20px;
     text-align: center;
     color: rgba(0,0,0,0.7) ;
@@ -53,3 +53,12 @@
     background:  #FAFAFA;
     padding: 0 5px;
 }
+.error-mail{
+    color: red;
+    font-size: 14px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* ----------------------------------------------   Media Quries ---------------------------- */

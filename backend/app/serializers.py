@@ -37,7 +37,19 @@ class VerifyOTPSerializer(serializers.Serializer):
     otp=serializers.CharField(max_length=6)
     
 
+class UserLoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
 
+    def validate_email(self, value):
+        if not User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("Invalid credentials")
+        return value
+
+    def validate_password(self, value):
+        if len(value) < 8:
+            raise serializers.ValidationError("Invalid credentials")
+        return value
 
 
 

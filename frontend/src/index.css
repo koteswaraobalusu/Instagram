@@ -13,3 +13,8 @@ a{
   text-decoration: none;
   cursor: pointer;
 }
+.error{
+  color: red;
+  font-size: 14px;
+  margin-top: 0px;
+}

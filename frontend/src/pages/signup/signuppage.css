@@ -37,7 +37,7 @@
     left: 20px;
     
 }
-.signup p{
+.link-to{
     margin: 20px;
     text-align: center;
     color: rgba(0,0,0,0.7) ;
@@ -53,7 +53,18 @@
     padding: 0 5px;
 }
 
-.user-verify{
-    margin-top:30px;
-    display: ;
+.otp-verify{
+    margin: 15px;
+    margin-top: 30px;
+}
+.otp-verify label{
+    text-align: center;
+    align-items: center;
+}
+.error-mail{
+    color: red;
+    font-size: 14px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+    text-align: center;
 }
