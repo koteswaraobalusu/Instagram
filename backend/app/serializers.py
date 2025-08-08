@@ -46,10 +46,10 @@ class UserLoginSerializer(serializers.Serializer):
             raise serializers.ValidationError("Invalid credentials")
         return value
 
-    def validate_password(self, value):
-        if len(value) < 8:
-            raise serializers.ValidationError("Invalid credentials")
-        return value
+    # def validate_password(self, value):
+    #     if len(value) < 8:
+    #         raise serializers.ValidationError("Invalid credentials")
+    #     return value
 
 
 

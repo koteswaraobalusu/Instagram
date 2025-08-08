@@ -4,6 +4,7 @@ import { useProtectedQuery,useUserLogoutMutation } from '../../api/userAuthentic
 import FormButton from '../../components/formButtons/FormButton';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../../components/navbar/Navbar';
+import HomePosts from '../../components/homeposts/HomePosts';
 
 
 const HomePage = () => {
@@ -21,15 +22,25 @@ const HomePage = () => {
     //     }
     // }
   return (
-    <div>
+    <div className='page-container'>
         <Navbar/>
 
-        {
+        
+        <div className='posts-display'>
+          {/* {
             isLoading && <h1>Loading...</h1>
-        }
-        {
+          }
+          {
             data && data.username && <h1>{data.username}</h1>
-        }
+          } */}
+          <HomePosts/>
+        </div>
+
+        <div className='user-suggest'>
+          <h1>user suggestions</h1>
+
+        </div>
+        
         
     </div>
   )

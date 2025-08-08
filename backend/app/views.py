@@ -96,6 +96,7 @@ class RegisterVerifyOTPAPIView(APIView):
 class UserLoginAPIView(APIView):
     def post(self, request, format=None):
         serializer = UserLoginSerializer(data=request.data)
+        print(serializer)
         if serializer.is_valid():
             email = serializer.validated_data['email']
             password = serializer.validated_data['password']

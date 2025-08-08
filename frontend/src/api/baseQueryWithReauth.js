@@ -1,8 +1,17 @@
 import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { getCookie } from "../utils/getCookie";
+
 
 const baseQuery= fetchBaseQuery({
     baseUrl: 'http://localhost:8000/api/',
     credentials: 'include',
+    prepareHeaders: (headers) => {
+    const csrfToken = getCookie("csrftoken");
+    if (csrfToken) {
+      headers.set("X-CSRFToken", csrfToken); // ✅ Set CSRF token for Django
+    }
+    return headers;
+  },
 });
 
 const baseQueryWithReauth = async (args, api, extraOptions) => {
@@ -14,7 +23,8 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
             url:'token/refresh/', 
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCookie("csrftoken"), // ✅ Include CSRF token for refresh too
         },
             body: {},
         },
