@@ -34,7 +34,7 @@ const HomePosts = () => {
             </div>
             <div className='post-user-follow-btn'>
 
-                <buttnon className='follow-btn'>Follow</buttnon>
+                <button className='follow-btn'>Follow</button>
 
             </div>
       

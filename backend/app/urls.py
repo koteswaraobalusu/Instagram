@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path,include
 from .views import RequestOTPAPIView,RegisterVerifyOTPAPIView,UserLoginAPIView,ProtectedView,LogoutAPIView,CookieTokenRefreshView
 urlpatterns=[
 
@@ -8,6 +8,9 @@ urlpatterns=[
     path('protected/', ProtectedView.as_view(), name='protected-view'),
     path('logout/', LogoutAPIView.as_view(), name='logout'),
     path('token/refresh/', CookieTokenRefreshView.as_view(), name='refresh_token'),
+    path('profile/',include('userprofile.urls')),
+    path('posts/',include('userposts.urls')),
+    
 
     
 ]

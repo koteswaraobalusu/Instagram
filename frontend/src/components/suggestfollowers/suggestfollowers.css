@@ -1,0 +1,29 @@
+.suggest-followers{
+    width: 350px;
+
+}
+.followers-heading{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.user-follow{
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.post-user-details{
+    margin-left: 10px;
+
+}
+.users{
+    margin: 5px;
+}
+.no-suggest{
+    text-align: center;
+    margin: 20px;
+    font-size: 24px;
+    color: rgba(0,0,255,0.3);
+}

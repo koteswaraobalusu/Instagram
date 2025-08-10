@@ -133,6 +133,7 @@ class LogoutAPIView(APIView):
         response.delete_cookie('access')
         response.delete_cookie('refresh')
         return response
+    
 
 
 

@@ -46,6 +46,12 @@ export const userAuthenticationApi = createApi({
         method: 'POST',
       }),
   }),
+  users:builder.query({
+    query:()=>({
+      url:'profile/users/suggest/',
+      method:'GET',
+    }),
+  }),
   }),
 });
 
@@ -56,5 +62,6 @@ export const {
   useUserLoginMutation,
   useProtectedQuery,
   useUserLogoutMutation,
-  useRefreshTokenMutation
+  useRefreshTokenMutation,
+  useUsersQuery,
 } = userAuthenticationApi;

@@ -22,13 +22,18 @@ const Navbar = () => {
         } catch (error) {
         }
     }
+
+    const handleHome=()=>{
+        console.log('homepage')
+        navigate('/')
+    }
   return (
     <nav className='navbar'>
         <FormHeader/>
 
         <ul className='nav-links'>
             
-            <li className='nav-item'>
+            <li className='nav-item' onClick={handleHome}>
                 <div className='logo'>
                     <img src={home_icon}/>
                 </div>

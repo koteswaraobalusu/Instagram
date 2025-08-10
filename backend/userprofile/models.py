@@ -14,3 +14,11 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
 
+class UserFollowing(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE,related_name='following',help_text='The user who is following others')
+    following_user=models.ForeignKey(User,on_delete=models.CASCADE,related_name='followers',help_text='The user being followed')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    @property
+    def following_count(self):
+        self.following_count()

@@ -5,6 +5,8 @@ import FormButton from '../../components/formButtons/FormButton';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../../components/navbar/Navbar';
 import HomePosts from '../../components/homeposts/HomePosts';
+import UserSuggest from '../../components/userssuggest/UserSuggest';
+import SuggestFollowers from '../../components/suggestfollowers/SuggestFollowers';
 
 
 const HomePage = () => {
@@ -36,9 +38,9 @@ const HomePage = () => {
           <HomePosts/>
         </div>
 
-        <div className='user-suggest'>
-          <h1>user suggestions</h1>
-
+        <div className='user-suggestions'>
+          <UserSuggest/>
+          <SuggestFollowers/>
         </div>
         
         

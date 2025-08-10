@@ -1,0 +1,23 @@
+.user-switch{
+    display: flex;
+    align-items: center;
+}
+.post-user-details h3{
+    font-size: 24px;
+    margin-left: 20px;
+}
+.user-suggest{
+    width: 350px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+.switch-btn{
+    border: none;
+    background: none;
+    font-size: 16px;
+    font-weight: 500;
+    color: rgb(172, 70, 240);
+    cursor: pointer;
+}
