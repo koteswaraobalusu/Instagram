@@ -41,13 +41,15 @@
     gap: 10px;
     align-items: center;
 }
-.post-user-details p{
-    font-size: 12px;
 
+.post-user-details-info p{
+    font-size: 12px;
 }
 .follow-btn{
     color: rgb(52, 52, 152,0.5);
     font-size: 16px;
+    outline: none;
+    border: none;
 }
 .user-uploaded-post{
     margin-top: 4px;

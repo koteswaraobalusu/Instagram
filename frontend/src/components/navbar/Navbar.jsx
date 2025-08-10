@@ -9,6 +9,7 @@ import messages_icon from '../../assets/messages_logo.png';
 import notifications_icon from '../../assets/notifications_logo.png';
 import profile_icon from '../../assets/profile_logo.png';
 import logout_icon from '../../assets/logout_logo.png';
+import upload_logo from '../../assets/upload_logo.png';
 import { useUserLogoutMutation } from '../../api/userAuthenticationApi';
 
 
@@ -52,6 +53,13 @@ const Navbar = () => {
                     <img src={reels_icon}/>
                 </div>
                 <a>Reels</a>
+            </li>
+
+            <li className='nav-item'>
+                <div className='logo'>
+                    <img src={upload_logo}/>
+                </div>
+                <a>Posts</a>
             </li>
 
             <li className='nav-item'>

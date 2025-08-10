@@ -27,7 +27,7 @@ const HomePosts = () => {
                 <div className='user-profile-ring'>
                     <img src={kotes} className='user-profile-img'/>
                 </div>
-                <div className='post-user-details'>
+                <div className='post-user-details-info'>
                     <h3>kotes</h3>
                     <p>Hyderabad,Telangana</p>
                 </div>
