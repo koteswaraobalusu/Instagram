@@ -1,11 +1,11 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
+from app.models import CustomUser
 from rest_framework.validators import ValidationError
 import re
 
 class RequestOTPSerializer(serializers.ModelSerializer):
     class Meta:
-        model=User
+        model=CustomUser
         fields=['username','email','password']
         extra_kwargs={
             'password':{
@@ -13,7 +13,7 @@ class RequestOTPSerializer(serializers.ModelSerializer):
             }
         }
     def validate_email(self,value):
-        if User.objects.filter(email=value).exists():
+        if CustomUser.objects.filter(email=value).exists():
             raise serializers.ValidationError("Email already exists")
         return value
 
@@ -42,7 +42,7 @@ class UserLoginSerializer(serializers.Serializer):
     password = serializers.CharField(write_only=True)
 
     def validate_email(self, value):
-        if not User.objects.filter(email=value).exists():
+        if not CustomUser.objects.filter(email=value).exists():
             raise serializers.ValidationError("Invalid credentials")
         return value
 
@@ -52,7 +52,10 @@ class UserLoginSerializer(serializers.Serializer):
     #     return value
 
 
-
+class CustomUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=CustomUser
+        fields=['id','username','email','profile_picture','bio','date_of_birth']
 
 
 

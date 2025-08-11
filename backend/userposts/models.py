@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.core.exceptions import ValidationError
 import uuid
 
@@ -18,7 +18,7 @@ def validate_file_type_and_size(file):
         raise ValidationError('File too large. Max size: 5 MB.')
 
 class UserPost(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     post_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     caption = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

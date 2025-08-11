@@ -2,9 +2,10 @@ from django.core.mail import EmailMultiAlternatives
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from  django.conf import settings
-from django.contrib.auth.models import User
 
-@receiver(post_save,sender=User)
+from .models import CustomUser
+
+@receiver(post_save,sender=CustomUser)
 def send_user_creation_email(sender,instance,created,**kwargs):
     if created:
         subject="Welcome to Our Instagram!"
@@ -19,6 +20,6 @@ def send_user_creation_email(sender,instance,created,**kwargs):
             </body>
             </html>
         '''
-        msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email])
-        msg.attach_alternative(html_content,'text/html')
-        msg.send()
+        # msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email])
+        # msg.attach_alternative(html_content,'text/html')
+        # msg.send()

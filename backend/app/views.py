@@ -2,8 +2,8 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import RequestOTPSerializer,VerifyOTPSerializer,UserLoginSerializer
-from .models import EmailOTP
+from .serializers import RequestOTPSerializer,VerifyOTPSerializer,UserLoginSerializer,CustomUserSerializer
+from .models import EmailOTP,CustomUser
 from django.core.mail import EmailMultiAlternatives
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -75,7 +75,7 @@ class RegisterVerifyOTPAPIView(APIView):
 
             password = pending_user.get('password')
             
-            user = User.objects.create_user(username=email, email=email, password=password)
+            user = CustomUser.objects.create_user(username=email, email=email, password=password)
 
             otp_obj.delete()
             del request.session['pending_user']
@@ -101,20 +101,22 @@ class UserLoginAPIView(APIView):
             email = serializer.validated_data['email']
             password = serializer.validated_data['password']
             try:
-                user = User.objects.get(email=email)
+                user = CustomUser.objects.get(email=email)
                 if user.check_password(password):
+                    custom_user_serializer=CustomUserSerializer(user)
                     refresh = RefreshToken.for_user(user)
                     response = Response({
                         "msg": "User logged in",
                         "refresh": str(refresh),
-                        "access": str(refresh.access_token)
+                        "access": str(refresh.access_token),
+                        "user":custom_user_serializer.data
                     }, status=status.HTTP_200_OK)
                     response.set_cookie('refresh', str(refresh), httponly=True, samesite='Lax', secure=False)
                     response.set_cookie('access', str(refresh.access_token), httponly=True, samesite='Lax', secure=False)   
                     return response
                 else:
                     return Response({"error": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST)
-            except User.DoesNotExist:
+            except CustomUser.DoesNotExist:
                 return Response({"error": "User does not exist"}, status=status.HTTP_404_NOT_FOUND)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     

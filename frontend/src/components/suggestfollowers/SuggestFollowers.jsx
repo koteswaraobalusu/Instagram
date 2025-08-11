@@ -2,11 +2,13 @@ import React, { useState } from 'react'
 import './suggestfollowers.css';
 import { useUsersQuery } from '../../api/userAuthenticationApi';
 import kotes from'../../assets/koteswararao.jpg';
-import close_logo from '../../assets/close_logo.png'
+import close_logo from '../../assets/close_logo.png';
+import profile_logo from '../../assets/profile_logo.png'
 
 
 const SuggestFollowers = () => {
     const {data}=useUsersQuery();
+    console.log(data)
     const [allSuggestedUsers,setAllSuggestedUsers]=useState(false);
     const usersToDisplay = allSuggestedUsers? data?.users: data?.users?.slice(0, 5);
 
@@ -33,7 +35,7 @@ const SuggestFollowers = () => {
                                 <div className='user-follow' key={user.id}>
                                     <div className='user-switch'>
                                         <div className='user-profile-ring'>
-                                            <img src={kotes} className='user-profile-img'/>
+                                            <img src={user.profile_picture===null?profile_logo:user.profile_picture} alt={user.username} className='user-profile-img'/>
                                         </div>
                                         <div className='post-user-details'>
                                             <h4>{user.username}</h4>
@@ -71,7 +73,7 @@ const SuggestFollowers = () => {
                             <div className='user-follow' key={user.id}>
                                 <div className='user-switch'>
                                     <div className='user-profile-ring'>
-                                        <img src={kotes} className='user-profile-img'/>
+                                        <img src={user.profile_picture===null?profile_logo:user.profile_picture} alt={user.username} className='user-profile-img'/>
                                     </div>
                                     <div className='post-user-details'>
                                         <h4>{user.username}</h4>

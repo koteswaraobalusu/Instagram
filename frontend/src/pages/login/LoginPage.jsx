@@ -36,6 +36,7 @@ const LoginPage = () => {
     try {
       const res = await loginUser(formData).unwrap();
       if (res) {
+        console.log(res)
         navigate('/'); // Redirect to home page on successful login
         // Navigate to home or dashboard page
       }

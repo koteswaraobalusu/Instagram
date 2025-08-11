@@ -1,7 +1,7 @@
 from rest_framework.serializers import ModelSerializer
 from .models import UserProfile
-from django.contrib.auth.models import User
-
+from app.models import CustomUser
+from django.conf import settings
 class UserProfileSerializer(ModelSerializer):
     class Meta:
         model = UserProfile
@@ -10,6 +10,6 @@ class UserProfileSerializer(ModelSerializer):
     
 class UserSerializer(ModelSerializer):
     class Meta:
-        model=User
-        fields=['id','username','email']
+        model=CustomUser
+        fields=['id','username','email','bio','profile_picture','date_of_birth',]
         
