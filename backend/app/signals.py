@@ -20,6 +20,6 @@ def send_user_creation_email(sender,instance,created,**kwargs):
             </body>
             </html>
         '''
-        # msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email])
-        # msg.attach_alternative(html_content,'text/html')
-        # msg.send()
+        msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email])
+        msg.attach_alternative(html_content,'text/html')
+        msg.send()
