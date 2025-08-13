@@ -5,7 +5,7 @@ from django.conf import settings
 class UserProfileSerializer(ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = ['user', 'bio', 'profile_picture', 'address', 'city']
+        fields = ['user',  'address', 'city','followers_count','following_count']
         read_only_fields = ['user']
     
 class UserSerializer(ModelSerializer):

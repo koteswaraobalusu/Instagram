@@ -11,6 +11,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.views import TokenRefreshView
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 
+from userprofile.models import UserProfile
+from userprofile.serializers import UserProfileSerializer
 
 from django.utils import timezone
 from datetime import datetime
@@ -40,8 +42,6 @@ class RequestOTPAPIView(APIView):
             msg.send()
 
             request.session['pending_user'] = {'email': email, 'password': password } # store password temporarily
-            print("Pending user from session:", request.session.get('pending_user'))
-            print("All session keys:", list(request.session.keys()))
             return Response({"msg": "OTP sent to email"}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
@@ -67,8 +67,6 @@ class RegisterVerifyOTPAPIView(APIView):
                 return response
 
 
-            print("Pending user from session:", request.session.get('pending_user'))
-            print("All session keys:", list(request.session.keys()))
             pending_user = request.session.get('pending_user')
             if not pending_user or pending_user.get('email') != email:
                 return Response({"error": "Password expired or not found"}, status=status.HTTP_400_BAD_REQUEST)
@@ -88,43 +86,38 @@ class RegisterVerifyOTPAPIView(APIView):
                 "refresh": str(refresh),
                 "access": str(refresh.access_token)
             }, status=status.HTTP_201_CREATED)
-            response.set_cookie('refresh', str(refresh), httponly=True, samesite='Lax', secure=False,sameSite='Lax',path='/',max_age=30*24*60*60)
-            response.set_cookie('access', str(refresh.access_token), httponly=True, samesite='Lax', secure=False,sameSite='Lax',path='/',max_age=30*60)   
+            response.set_cookie('refresh', str(refresh), httponly=True, samesite='Lax', secure=False,path='/',max_age=30*24*60*60)
+            response.set_cookie('access', str(refresh.access_token), httponly=True, samesite='Lax', secure=False,path='/',max_age=30*60)   
             return response
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 class UserLoginAPIView(APIView):
+    
     def post(self, request, format=None):
         serializer = UserLoginSerializer(data=request.data)
-        print(serializer)
         if serializer.is_valid():
-            email = serializer.validated_data['email']
-            password = serializer.validated_data['password']
-            try:
-                user = CustomUser.objects.get(email=email)
-                if user.check_password(password):
-                    custom_user_serializer=CustomUserSerializer(user)
-                    refresh = RefreshToken.for_user(user)
-                    response = Response({
+            print("serializer is valid")
+            user = serializer.validated_data['user']
+            refresh = RefreshToken.for_user(user)
+            user_data = CustomUserSerializer(user).data
+            response = Response({
                         "msg": "User logged in",
                         "refresh": str(refresh),
                         "access": str(refresh.access_token),
-                        "user":custom_user_serializer.data
+        
                     }, status=status.HTTP_200_OK)
-                    response.set_cookie('refresh', str(refresh), httponly=True, samesite='Lax', secure=False)
-                    response.set_cookie('access', str(refresh.access_token), httponly=True, samesite='Lax', secure=False)   
-                    return response
-                else:
-                    return Response({"error": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST)
-            except CustomUser.DoesNotExist:
-                return Response({"error": "User does not exist"}, status=status.HTTP_404_NOT_FOUND)
+            response.set_cookie('refresh', str(refresh), httponly=True, samesite='Lax', secure=False)
+            response.set_cookie('access', str(refresh.access_token), httponly=True, samesite='Lax', secure=False)   
+            return response
+            
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 class ProtectedView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        return Response({'is_authenticated': True, 'username': request.user.username}, status=status.HTTP_200_OK)
+        profile=UserProfile.objects.get(id=request.user.id)
+        return Response({'is_authenticated': True, 'username': request.user.username,'profile':UserProfileSerializer(profile).data}, status=status.HTTP_200_OK)
 
 
 class LogoutAPIView(APIView):

@@ -37,19 +37,32 @@ class VerifyOTPSerializer(serializers.Serializer):
     otp=serializers.CharField(max_length=6)
     
 
+from rest_framework import serializers
+from django.contrib.auth import authenticate
+
 class UserLoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
 
-    def validate_email(self, value):
-        if not CustomUser.objects.filter(email=value).exists():
-            raise serializers.ValidationError("Invalid credentials")
-        return value
+    def validate(self, data):
+        email = data.get('email')
+        password = data.get('password')
 
-    # def validate_password(self, value):
-    #     if len(value) < 8:
-    #         raise serializers.ValidationError("Invalid credentials")
-    #     return value
+        try:
+            user = CustomUser.objects.get(email=email)
+        except CustomUser.DoesNotExist:
+            raise serializers.ValidationError("User with this email does not exist.")
+
+        if not user.check_password(password):
+            raise serializers.ValidationError("Incorrect password.")
+
+        # if not user.is_active:
+        #     raise serializers.ValidationError("User account is disabled.")
+
+        data['user'] = user
+        print(data)
+        return data
+
 
 
 class CustomUserSerializer(serializers.ModelSerializer):

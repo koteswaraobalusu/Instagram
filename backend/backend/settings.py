@@ -154,7 +154,7 @@ CORS_ALLOWED_ORIGINS = [  # Vite default port
     "http://localhost:5173"
 ]
 CSRF_TRUSTED_ORIGINS = ["http://localhost:5173"]
-AUTO_SLASH= True
+APPEND_SLASH=True
 
 from decouple import config
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
