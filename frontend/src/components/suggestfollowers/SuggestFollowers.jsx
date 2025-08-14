@@ -8,11 +8,11 @@ import profile_logo from '../../assets/profile_logo.png'
 
 const SuggestFollowers = () => {
     const {data}=useUsersQuery();
-    console.log(data)
+  
     const [allSuggestedUsers,setAllSuggestedUsers]=useState(false);
     const usersToDisplay = allSuggestedUsers? data?.users: data?.users?.slice(0, 5);
 
-    console.log(data)
+   
 
   return (
     <>

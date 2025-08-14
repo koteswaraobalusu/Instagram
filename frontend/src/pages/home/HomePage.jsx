@@ -12,29 +12,15 @@ import SuggestFollowers from '../../components/suggestfollowers/SuggestFollowers
 const HomePage = () => {
     const { data, isLoading, isError } = useProtectedQuery();
     const navigate = useNavigate();
-    console.log(data, isLoading, isError);
-    // const handleLogout = async () => {
-    //     try {
-    //         await logout().unwrap();
-    //         console.log('Logged out successfully');
-    //         navigate('/login'); // Redirect to login page after logout
-    //         // Optionally redirect to login page or show a message
-    //     } catch (error) {
-    //         console.error('Logout failed:', error);
-    //     }
-    // }
+    
+    
   return (
     <div className='page-container'>
         <Navbar/>
 
         
         <div className='posts-display'>
-          {/* {
-            isLoading && <h1>Loading...</h1>
-          }
-          {
-            data && data.username && <h1>{data.username}</h1>
-          } */}
+      
           <HomePosts/>
         </div>
 

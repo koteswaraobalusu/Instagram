@@ -7,12 +7,15 @@ def post_media_path(instance, filename):
     return f'userposts/{instance.post.user.id}/{instance.post.id}/{filename}'
 
 def validate_file_type_and_size(file):
-    valid_mime_types = ['image/jpeg', 'image/png','image/webp','video/mp4']
+    content_type = getattr(file, 'content_type', None)
+    if content_type is None:
+        raise ValidationError("Cannot determine file type")
+
+    valid_mime_types = ['image/jpeg', 'image/png', 'image/webp', 'video/mp4']
     max_file_size = 5 * 1024 * 1024  # 5 MB
 
-    file_mime_type = file.file.content_type
-    if file_mime_type not in valid_mime_types:
-        raise ValidationError('Unsupported file type. Allowed types: JPG, PNG,WEBP,MP4.')
+    if content_type not in valid_mime_types:
+        raise ValidationError('Unsupported file type. Allowed types: JPG, PNG, WEBP, MP4.')
 
     if file.size > max_file_size:
         raise ValidationError('File too large. Max size: 5 MB.')

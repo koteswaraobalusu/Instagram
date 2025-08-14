@@ -1,6 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import baseQueryWithReauth from "./baseQueryWithReauth";
 import { requestFormReset } from "react-dom";
+import { data } from "react-router-dom";
 
 
 export const userAuthenticationApi = createApi({
@@ -52,6 +53,20 @@ export const userAuthenticationApi = createApi({
       method:'GET',
     }),
   }),
+  create_post_id:builder.mutation({
+    query:()=>({
+      url:'posts/post/create/',
+      method:'POST',
+    }),
+  }),
+  upload_posts:builder.mutation({
+    query:(data)=>({
+      url:'posts/post/upload/',
+      method:'POST',
+      body:data,
+    }),
+  }),
+
   }),
 });
 
@@ -64,4 +79,6 @@ export const {
   useUserLogoutMutation,
   useRefreshTokenMutation,
   useUsersQuery,
+  useCreate_post_idMutation,
+  useUpload_postsMutation,
 } = userAuthenticationApi;

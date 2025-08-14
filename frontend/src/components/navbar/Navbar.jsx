@@ -25,8 +25,10 @@ const Navbar = () => {
     }
 
     const handleHome=()=>{
-        console.log('homepage')
         navigate('/')
+    }
+    const handleUploadPost=()=>{
+        navigate('/upload-post')
     }
   return (
     <nav className='navbar'>
@@ -55,7 +57,7 @@ const Navbar = () => {
                 <a>Reels</a>
             </li>
 
-            <li className='nav-item'>
+            <li className='nav-item' onClick={handleUploadPost}>
                 <div className='logo'>
                     <img src={upload_logo}/>
                 </div>

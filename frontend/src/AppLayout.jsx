@@ -4,7 +4,8 @@ import LoginPage from './pages/login/LoginPage';
 import SignupPage from './pages/signup/SignupPage';
 import HomePage from './pages/home/HomePage';
 import ProtectedRoute from '../ProtectedRoute';
-import Navbar from './components/navbar/Navbar';
+import UploadPost from './pages/uploadpost/UploadPost';
+
 
 
 
@@ -17,6 +18,7 @@ const AppLayout = () => {
         <Route path='/login' element={<LoginPage/>}/>
         <Route path='/signup' element={<SignupPage/>}/>
         <Route path='/' element={<ProtectedRoute><HomePage/></ProtectedRoute>}/>
+        <Route path='/upload-post' element={<ProtectedRoute><UploadPost/></ProtectedRoute>}/>
         
       </Routes>
     </>

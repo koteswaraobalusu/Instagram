@@ -14,22 +14,45 @@ class CreateUserPostView(APIView):
             serializer.save(user=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class PostMediaAPIView(APIView):
-    permission_classes=[IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
-    def post(self,request):
-        post_id=request.data.get('post_id')
+    def post(self, request):
+        post_id = request.data.get('post_id')
+
+        # Validate post existence
         try:
-             post = UserPost.objects.get(post_id=post_id, user=request.user)
-
+            post = UserPost.objects.get(post_id=post_id, user=request.user)
         except UserPost.DoesNotExist:
             return Response({'error': 'Invalid post ID'}, status=status.HTTP_404_NOT_FOUND)
 
-        serializer=PostMediaSerializer(data=request.data,files=request.FILES)
-        if serializer.is_valid():
-            serializer.save(post=post)
-            return Response(status=status.HTTP_201_CREATED)
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+        # Get all media files
+        files = request.FILES.getlist('media')
+        if not files:
+            return Response({'error': 'No media files provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+        uploaded_media = []
+        errors = []
+
+        # Process each file individually
+        for file in files:
+            serializer = PostMediaSerializer(data={'file': file})
+            if serializer.is_valid():
+                serializer.save(post=post)
+                uploaded_media.append(serializer.data)
+            else:
+                errors.append({file.name: serializer.errors})
+
+        # Handle errors or return success
+        if errors:
+            return Response({'errors': errors}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({
+            'message': 'Media uploaded successfully',
+            'uploaded_media': uploaded_media
+        }, status=status.HTTP_201_CREATED)
     
 class UserPostListAPIView(APIView):
 
