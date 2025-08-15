@@ -81,10 +81,9 @@ class RegisterVerifyOTPAPIView(APIView):
 
             refresh = RefreshToken.for_user(user)
            
+           
             response=Response({
                 "msg": "User created and logged in",
-                "refresh": str(refresh),
-                "access": str(refresh.access_token)
             }, status=status.HTTP_201_CREATED)
             response.set_cookie('refresh', str(refresh), httponly=True, samesite='Lax', secure=False,path='/',max_age=30*24*60*60)
             response.set_cookie('access', str(refresh.access_token), httponly=True, samesite='Lax', secure=False,path='/',max_age=30*60)   
@@ -176,3 +175,12 @@ class CookieTokenRefreshView(TokenRefreshView):
 
         return response
 
+
+class UserLoginDetailsAPIView(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def get(self,request):
+        user_data=CustomUser.objects.get(id=request.user.id)
+        serializer=CustomUserSerializer(user_data)
+        return Response({'user':serializer.data},status=status.HTTP_200_OK)
+    

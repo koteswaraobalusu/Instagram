@@ -4,6 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from .models import UserPost, PostMedia
 from .serializers import UserPostSerializer,PostMediaSerializer
 from rest_framework import status
+from userprofile.models import UserFollowing
 
 class CreateUserPostView(APIView):
     permission_classes = [IsAuthenticated]
@@ -59,8 +60,11 @@ class UserPostListAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        user_posts = UserPost.objects.filter(user=request.user).order_by('-created_at')
-        
+        user=request.user
+        following_ids=UserFollowing.objects.filter(user=user).values_list('following_user_id', flat=True)
+        all_user_ids = list(following_ids) + [user.id]
+        user_posts = UserPost.objects.filter(user__in=all_user_ids).order_by('-created_at')
+
         if not user_posts.exists():
             return Response({'msg': 'No posts available'}, status=status.HTTP_204_NO_CONTENT)
 

@@ -1,11 +1,11 @@
-import React, { use, useEffect, useReducer, useState } from 'react';
+import React, {useEffect, useReducer, useState } from 'react';
 import './signuppage.css';
 import { Link, useNavigate } from 'react-router-dom';
 import FormHeader from '../../components/formHeader/FormHeader';
 import FormButton from '../../components/formButtons/FormButton';
 import { useUserSignupMutation,useUserSignupOtpVerifyMutation } from '../../api/userAuthenticationApi';
-
-
+import { setUser } from '../../store/userSlice';
+import { useDispatch } from 'react-redux';
 
 
 const SignupPage = () => {
@@ -79,7 +79,7 @@ const SignupPage = () => {
 
           setMailSent(res.msg)
           if(res.msg){
-            navigate('/');
+    
             setTimeLeft(5*60); // Set time left to 5 minutes
             setIsActive(true);
             setOtpButton(true);
@@ -105,6 +105,8 @@ const validateOtp = async (e) => {
     try{
       const res=await validateUserOtp({email:formData.email,otp:otpVerify}).unwrap();
       if(res){
+      
+        navigate('/');
         dispatch({type: 'RESET'});
         setOtpButton(false);
         setTimeLeft(0);
@@ -112,8 +114,6 @@ const validateOtp = async (e) => {
         setOtpVerify("");
         setMailSent("");
         setErrors({});
-
-        console.log(res);
       }
     }
     

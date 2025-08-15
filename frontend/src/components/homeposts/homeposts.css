@@ -1,8 +1,9 @@
 .user-posts{
-    background: rgba(233, 221, 221, 0.6);
+
     width: 500px;
     padding: 10px;
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
 }
@@ -37,7 +38,9 @@
     background: white;
 }
 .post-user-info{
+    width: 100%;
     display: flex;
+    justify-content: space-between;
     gap: 10px;
     align-items: center;
 }
@@ -66,6 +69,7 @@
     border-radius: 10px;
 }
 .post-details{
+    width: 100%;
     display: flex;
     justify-content: space-between;
     margin-top: 5px;
@@ -83,6 +87,7 @@
 .post-comment input{
     width: 100%;
     border: none;
+    margin: 5px;
 }
 .post-comment input:focus{
     outline: none;
@@ -96,6 +101,12 @@
     padding: 5px;
 }
 .border{
-    margin-top: 5px;
+    width: 100%;
+    margin: 5px;
     border: 1px solid rgba(0, 0, 0, 0.15);
+}
+.user-details{
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }

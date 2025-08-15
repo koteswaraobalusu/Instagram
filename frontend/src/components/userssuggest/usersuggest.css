@@ -21,3 +21,10 @@
     color: rgb(172, 70, 240);
     cursor: pointer;
 }
+.truncate-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px; /* or adjust based on your layout */
+  display: inline-block;
+}

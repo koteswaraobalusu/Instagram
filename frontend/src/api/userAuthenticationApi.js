@@ -66,6 +66,32 @@ export const userAuthenticationApi = createApi({
       body:data,
     }),
   }),
+  userLoginDetails:builder.query({
+    query:()=>({
+      url:'user-details/',
+      method:'GET',
+    }),
+  }),
+  userFollowRequest:builder.mutation({
+    query:(data)=>({
+      url:'profile/follow/request/',
+      method:'POST',
+      body:data,
+    }),
+  }),
+  userUnFollowRequest:builder.mutation({
+    query:(data)=>({
+      url:'profile/unfollow/request/',
+      method:'POST',
+      body:data,
+    }),
+  }),
+  userPosts:builder.query({
+    query:()=>({
+      url:'posts/user/posts/',
+      method:'GET',
+    }),
+  }),
 
   }),
 });
@@ -81,4 +107,8 @@ export const {
   useUsersQuery,
   useCreate_post_idMutation,
   useUpload_postsMutation,
+  useUserLoginDetailsQuery,
+  useUserFollowRequestMutation,
+  useUserUnFollowRequestMutation,
+  useUserPostsQuery,
 } = userAuthenticationApi;

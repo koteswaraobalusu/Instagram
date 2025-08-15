@@ -1,12 +1,18 @@
 import React from 'react'
-import kotes from '../../assets/koteswararao.jpg'
+import profile_logo from '../../assets/profile_logo.png';
 import './usersuggest.css'
-import { useUserLogoutMutation } from '../../api/userAuthenticationApi';
+import { useUserLoginDetailsQuery, useUserLogoutMutation } from '../../api/userAuthenticationApi';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
 
 const UserSuggest = () => {
     const [logout]=useUserLogoutMutation();
+    const {data,isLoading,isError}=useUserLoginDetailsQuery();
     const navigate=useNavigate();
+    console.log(data)
+    
+ 
     const handleLogout = async () => {
         try {
             await logout().unwrap();
@@ -14,15 +20,20 @@ const UserSuggest = () => {
         } catch (error) {
         }
     }
+
+    if (isLoading) return <p>Loading...</p>;
+    if (isError || !data) return <p>Unable to load user.</p>;
   return (
     <div className='user-suggest'>
 
+       
+            
         <div className='user-switch'>
             <div className='user-profile-ring'>
-                <img src={kotes} className='user-profile-img'/>
+                <img src={data.user.profile_picture===null?profile_logo:`http://localhost:8000${data.user.profile_picture}`} className='user-profile-img'/>
             </div>
             <div className='post-user-details'>
-                <h3>kotes</h3>
+                <h3 className='truncate-text' title={data.user.username}>{data.user.username}</h3>
             </div>
         </div>
 
@@ -31,6 +42,7 @@ const UserSuggest = () => {
             <button className='switch-btn' onClick={handleLogout}>Switch</button>
 
         </div>
+            
         
 
     </div>

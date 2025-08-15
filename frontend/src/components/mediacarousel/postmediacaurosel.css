@@ -1,0 +1,23 @@
+.media-carousel {
+    width: 100%;
+    position: relative;
+    text-align: center;
+}
+
+.media-carousel button {
+    background: none;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    color: black;
+}
+.media-carousel button:hover{
+    background: none;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    color: black;
+    cursor: pointer;
+}
