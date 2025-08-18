@@ -5,6 +5,7 @@ import SignupPage from './pages/signup/SignupPage';
 import HomePage from './pages/home/HomePage';
 import ProtectedRoute from '../ProtectedRoute';
 import UploadPost from './pages/uploadpost/UploadPost';
+import PostComments from './components/postcomments/PostComments';
 
 
 
@@ -19,6 +20,7 @@ const AppLayout = () => {
         <Route path='/signup' element={<SignupPage/>}/>
         <Route path='/' element={<ProtectedRoute><HomePage/></ProtectedRoute>}/>
         <Route path='/upload-post' element={<ProtectedRoute><UploadPost/></ProtectedRoute>}/>
+        <Route path='/post-comments' elements={<ProtectedRoute><PostComments/></ProtectedRoute>}/>
         
       </Routes>
     </>

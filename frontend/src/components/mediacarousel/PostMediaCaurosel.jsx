@@ -21,7 +21,7 @@ const PostMediaCarousel = ({ mediaFiles }) => {
     <div className="media-carousel">
         <button onClick={handlePrev}>⟨</button>
       <img
-        src={`http://localhost:8000${mediaFiles[currentIndex].file}`}
+        src={`${mediaFiles[currentIndex].file}`}
         alt={`Media ${currentIndex + 1}`}
         style={{ width: '100%', maxHeight: '400px', objectFit: 'cover' }}
       />

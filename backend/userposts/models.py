@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from app.models import CustomUser
 import uuid
 
 def post_media_path(instance, filename):
@@ -36,3 +37,20 @@ class PostMedia(models.Model):
 
     def __str__(self):
         return f"{self.post.user.username} - {self.post.post_id}"
+
+class PostLikes(models.Model):
+    post=models.ForeignKey(UserPost,on_delete=models.CASCADE)
+    user=models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+
+
+    def __str__(self):
+        return f'{self.post.post_id}-{self.user.username}'
+
+class PostComments(models.Model):
+    post=models.ForeignKey(UserPost,on_delete=models.CASCADE)
+    user=models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+    comment=models.TextField();
+
+    def __str__(self):
+        return f'{self.post.post_id}-{self.user.username}'
+    

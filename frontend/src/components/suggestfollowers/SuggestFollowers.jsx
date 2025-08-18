@@ -10,7 +10,7 @@ const SuggestFollowers = () => {
     const {data}=useUsersQuery();
     const [followRequest]=useUserFollowRequestMutation();
     const [unfollowRequest]=useUserUnFollowRequestMutation();
-    const [followStatus,setFollowStatus]=useState({})
+    const [followStatus,setFollowStatus]=useState({});
 
   
     const [allSuggestedUsers,setAllSuggestedUsers]=useState(false);

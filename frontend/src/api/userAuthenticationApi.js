@@ -92,6 +92,28 @@ export const userAuthenticationApi = createApi({
       method:'GET',
     }),
   }),
+  likepost:builder.mutation({
+    query:(data)=>({
+      url:'posts/post/like/',
+      method:'POST',
+      body:data
+
+    }),
+  }),
+  unlikepost:builder.mutation({
+    query:(data)=>({
+      url:'posts/post/unlike/',
+      method:'POST',
+      body:data
+    }),
+  }),
+  postComments:builder.mutation({
+    query:(data)=>({
+      url:'posts/post/comments/',
+      method:'POST',
+      body:data
+    }),
+  }),
 
   }),
 });
@@ -111,4 +133,7 @@ export const {
   useUserFollowRequestMutation,
   useUserUnFollowRequestMutation,
   useUserPostsQuery,
+  useLikepostMutation,
+  useUnlikepostMutation,
+  usePostCommentsMutation,
 } = userAuthenticationApi;
