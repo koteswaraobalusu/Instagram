@@ -5,12 +5,12 @@ import like_logo from '../../assets/like_logo.png';
 import comment_logo from '../../assets/comment_logo.png';
 import share_logo from '../../assets/share_logo.png';
 import download_logo from '../../assets/download_logo.png';
-import { useLikepostMutation, usePostCommentsMutation, useUnlikepostMutation, useUserFollowRequestMutation, useUserPostsQuery, useUserUnFollowRequestMutation } from '../../api/userAuthenticationApi';
+import { useLikepostMutation, usePostCommentsMutation, usePostDeleteMutation, useUnlikepostMutation, useUserFollowRequestMutation, useUserPostsQuery, useUserUnFollowRequestMutation } from '../../api/userAuthenticationApi';
 import profile_logo from '../../assets/profile_logo.png';
 import PostMediaCarousel from '../mediacarousel/PostMediaCaurosel';
 import PostComments from '../postcomments/PostComments';
 import { useNavigate } from 'react-router-dom';
-
+import delete_logo from '../../assets/delete_logo.png';
 
 
 
@@ -29,10 +29,34 @@ const HomePosts = () => {
     const [postComments]=usePostCommentsMutation();
     const [displayComments,setDisplayComments]=useState(false);
     const [comments,setComments]=useState({});
-
+    const [postdelete]=usePostDeleteMutation();
     const navigate=useNavigate();
     console.log(data)
     
+
+    const handleDelete=async (post_id)=>{
+        try{
+            const res=await postdelete({'post_id':post_id});
+            if(res){
+                console.log('delete',res)
+            }
+        }
+        catch(err){
+            console.log(err)
+                
+        }
+
+
+    }
+
+
+
+
+
+
+
+
+
     const handleComment = (e) => {
         const value = e.target.value;
         setCommentText(value);
@@ -182,6 +206,32 @@ const HomePosts = () => {
         }
 
     }
+
+    const handleShare = async (post) => {
+    const shareUrl = `${window.location.origin}/post/${post.post_id}`;
+
+    if (navigator.share) {
+        try {
+            await navigator.share({
+                title: post.title || 'Check out this post!',
+                text: post.content || '',
+                url: shareUrl,
+            });
+            console.log('Shared successfully');
+        } catch (error) {
+            console.error('Share failed:', error);
+        }
+    } else {
+        // Fallback: copy to clipboard
+        try {
+            await navigator.clipboard.writeText(shareUrl);
+            alert('Link copied to clipboard!');
+        } catch (err) {
+            alert('Failed to copy the link.');
+        }
+    }
+};
+
     
     {
         isLoading && <p>Loading....</p>
@@ -271,7 +321,7 @@ const HomePosts = () => {
                                 <button className='action-button' onClick={()=>{getComments(post.post_id)}}>
                                 <img src={comment_logo} className='action-logo' alt='Comment' />
                                 </button>
-                                <button className='action-button'>
+                                <button className='action-button' onClick={()=>{handleShare(post)}}>
                                 <img src={share_logo} className='action-logo' alt='Share' />
                                 </button>
                             </div>
@@ -279,6 +329,18 @@ const HomePosts = () => {
                                 <button className='action-button' onClick={()=>handleDownloadMedia(post.media_files)}>
                                 <img src={download_logo} className='action-logo' alt='Download' />
                                 </button>
+                                {
+                                    post.user.id===data.user.id && (
+                                        
+                                            <button className='action-button' onClick={()=>handleDelete(post.post_id)}>
+                                                <img src={delete_logo} className='action-logo' alt='Download' />
+                                            </button>
+                                        
+                                    )
+                                }
+                                {/* <button className='action-button' onClick={()=>handleDelete(post.post_id)}>
+                                <img src={delete_logo} className='action-logo' alt='Download' />
+                                </button> */}
                             </div>
                         </div>
 

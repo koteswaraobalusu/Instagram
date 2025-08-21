@@ -1,6 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated,AllowAny
 from .models import UserPost, PostMedia,PostLikes,PostComments
 from .serializers import UserPostSerializer,PostMediaSerializer,UserSerializer,PostListCommentsSerializer
 from rest_framework import status
@@ -146,3 +146,31 @@ class PostListCommentsAPIView(APIView):
         serializer=PostListCommentsSerializer(post_comments,many=True)
         
         return Response({'comments':serializer.data},status=status.HTTP_200_OK)
+    
+class PostDeleteAPIView(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def delete(self,request):
+        user=request.user
+        post_id=request.data.get('post_id')
+
+        if not post_id:
+            return Response({'error': 'post_id is required'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            post=UserPost.objects.get(user=user,post_id=post_id)
+        except UserPost.DoesNotExist:
+            return Response({'error': 'Post not found'}, status=status.HTTP_404_NOT_FOUND)
+        post.delete()
+        return Response({'message': 'Post deleted successfully'}, status=status.HTTP_200_OK)
+    
+class PostDetailsAPIView(APIView):
+    permission_classes=[AllowAny]
+    
+    def get(self,request,post_id):
+
+        try:
+            post=UserPost.objects.get(post_id=post_id)
+        except UserPost.DoesNotExist:
+            return Response({"detail": "Post not found"}, status=status.HTTP_404_NOT_FOUND)
+        serializer = UserPostSerializer(post)
+        return Response(serializer.data)

@@ -6,7 +6,8 @@ import HomePage from './pages/home/HomePage';
 import ProtectedRoute from '../ProtectedRoute';
 import UploadPost from './pages/uploadpost/UploadPost';
 import PostComments from './components/postcomments/PostComments';
-
+import PostMediaCarousel from './components/mediacarousel/PostMediaCaurosel';
+import PostDetails from './components/postdetails/PostDetails';
 
 
 
@@ -21,7 +22,7 @@ const AppLayout = () => {
         <Route path='/' element={<ProtectedRoute><HomePage/></ProtectedRoute>}/>
         <Route path='/upload-post' element={<ProtectedRoute><UploadPost/></ProtectedRoute>}/>
         <Route path='/post-comments' elements={<ProtectedRoute><PostComments/></ProtectedRoute>}/>
-        
+         <Route path="/post/:postId" element={<PostDetails/>} />
       </Routes>
     </>
   )

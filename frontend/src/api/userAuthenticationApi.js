@@ -114,11 +114,18 @@ export const userAuthenticationApi = createApi({
       body:data
     }),
   }),
+  postDelete:builder.mutation({
+    query:(data)=>({
+      url:'posts/post/delete/',
+      method:'DELETE',
+      body:data
+    }),
+  }),
 
   }),
 });
 
-// ✅ Export all hooks
+
 export const {
   useUserSignupMutation,
   useUserSignupOtpVerifyMutation,
@@ -136,4 +143,5 @@ export const {
   useLikepostMutation,
   useUnlikepostMutation,
   usePostCommentsMutation,
+  usePostDeleteMutation,
 } = userAuthenticationApi;
