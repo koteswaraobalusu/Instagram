@@ -24,6 +24,10 @@ const HomePosts = () => {
     const [followRequest]=useUserFollowRequestMutation();
     const [unfollowRequest]=useUserUnFollowRequestMutation();
     const [followStatus,setFollowStatus]=useState({});
+    const [commentsByPostId, setCommentsByPostId] = useState({});
+    const [visibleCommentsPostId, setVisibleCommentsPostId] = useState(null);
+    const [commentTextByPostId, setCommentTextByPostId] = useState({});
+    const [postingCommentId, setPostingCommentId] = useState(null);
     const [likePost]=useLikepostMutation();
     const [unlikePost]=useUnlikepostMutation();
     const [postComments]=usePostCommentsMutation();
@@ -62,51 +66,90 @@ const HomePosts = () => {
         setCommentText(value);
         setPostBtn(value.trim().length > 0);
     };
-    const handlePostComment = () => {
-        if (commentText.trim() === '') return;
+//     const handlePostComment = async (post_id) => {
+//     if (commentText.trim() === '') return;
 
-        // Call your API or update state
-        console.log('Posting comment:', commentText);
+//     try {
+//         const res = await postComments({ post_id, comment: commentText }).unwrap();
 
-        // Reset input
-        setCommentText('');
-        setPostBtn(false);
-    };
-    const handleFollowRequest=async (id)=>{
-        try{
-            const res=await followRequest({'id':id}).unwrap();
-            if(res){
-                setFollowStatus((prev)=>({...prev, [id]: false}))
-            }
-        }
-        catch(err){
-            console.log(err)
-        }
+//         if (res?.success) {
+//             // Refresh comments for this post
+//             await getComments(post_id);
+//             setCommentText('');
+//             setPostBtn(false);
+//         }
+//     } catch (error) {
+//         console.error('Failed to post comment', error);
+//     }
+// };
+//     const handlePostComment = async (post_id) => {
+//   const commentText = commentTextByPostId[post_id];
+//   if (!commentText || commentText.trim() === '') return;
+
+//   try {
+//     const res = await postComments({ post_id, comment: commentText }).unwrap();
+
+//     if (res?.success) {
+//       await getComments(post_id);
+//       // Clear the input for this post
+//       setCommentTextByPostId((prev) => ({
+//         ...prev,
+//         [post_id]: '',
+//       }));
+//     }
+//   } catch (error) {
+//     console.error('Failed to post comment', error);
+//   }
+// };
+
+//     const handleFollowRequest=async (id)=>{
+//         try{
+//             const res=await followRequest({'id':id}).unwrap();
+//             if(res){
+//                 setFollowStatus((prev)=>({...prev, [id]: false}))
+//             }
+//         }
+//         catch(err){
+//             console.log(err)
+//         }
+//     }
+//     const handleUnFollowRequest= async(id)=>{
+//         try{
+//             const res=await unfollowRequest({'id':id}).unwrap();
+//             if(res){
+//                 setFollowStatus((prev)=>({...prev, [id]: true}))
+
+//             }
+//         }
+//         catch(err){
+//             console.log(err)
+//         }
+//     }
+
+    const handlePostComment = async (post_id) => {
+  const commentText = commentTextByPostId[post_id];
+  if (!commentText || commentText.trim() === '') return;
+
+  try {
+    setPostingCommentId(post_id); // ⏳ Set loading
+    const res = await postComments({ post_id, comment: commentText }).unwrap();
+    console.log(res)
+
+    if (res?.success) {
+      await getComments(post_id);
+      setCommentTextByPostId((prev) => ({
+        ...prev,
+        [post_id]: '',
+      }));
     }
-    const handleUnFollowRequest= async(id)=>{
-        try{
-            const res=await unfollowRequest({'id':id}).unwrap();
-            if(res){
-                setFollowStatus((prev)=>({...prev, [id]: true}))
-
-            }
-        }
-        catch(err){
-            console.log(err)
-        }
-    }
+  } catch (error) {
+    console.error('Failed to post comment', error);
+  } finally {
+    setPostingCommentId(null); // ✅ Done
+  }
+};
 
 
-    // const handleDownloadMedia = (media_files) => {
-    //     media_files.forEach((media) => {
-    //         const link = document.createElement('a');
-    //         link.href = media.file; // ⬅️ get the actual file URL
-    //         link.download = media.file.split('/').pop(); // ⬅️ use filename from URL
-    //         document.body.appendChild(link);
-    //         link.click();
-    //         document.body.removeChild(link);
-    //     });
-    // };
 
     const handleDownloadMedia = async (media_files) => {
         for (const media of media_files) {
@@ -190,22 +233,21 @@ const HomePosts = () => {
         }
     };
 
-    const getComments=async (post_id)=>{
-
-        try{
-            const res=await postComments({'post_id':post_id})
-            if(res){
-                console.log(res.data)
-                setDisplayComments(true)
-                setComments(res.data)
-                
-            }
+    const getComments = async (post_id) => {
+    try {
+        const res = await postComments({ post_id }).unwrap();
+        if (res) {
+            setCommentsByPostId((prev) => ({
+                ...prev,
+                [post_id]: res.comments,
+            }));
+            setVisibleCommentsPostId(post_id);
         }
-        catch(err){
-            console.log(err)
-        }
-
+    } catch (err) {
+        console.log(err);
     }
+};
+    
 
     const handleShare = async (post) => {
     const shareUrl = `${window.location.origin}/post/${post.post_id}`;
@@ -231,7 +273,7 @@ const HomePosts = () => {
         }
     }
 };
-
+    
     
     {
         isLoading && <p>Loading....</p>
@@ -345,28 +387,57 @@ const HomePosts = () => {
                         </div>
 
                         <div className='post-comment'>
-                            <input
+                            * <input
                                 type='text'
                                 placeholder='Add a comment...'
                                 value={commentText}
                                 onChange={handleComment}
-                            />
-                            {postBtn && (
-                                <button className='post-btn' onClick={handlePostComment}>
-                                Post
+                            /> 
+                            {/* <input
+                                type='text'
+                                placeholder='Add a comment...'
+                                value={commentTextByPostId[post.post_id] || ''}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    setCommentTextByPostId((prev) => ({
+                                    ...prev,
+                                    [post.post_id]: value,
+                                    }));
+                                }}
+                                /> */}
+
+                            {/* {postBtn && (
+                                <button className='post-btn' onClick={()=>{handlePostComment(post.post_id)}}>
+                                    Post
                                 </button>
-                            )}
+                            )} */}
+                            {/* {(commentTextByPostId[post.post_id]?.trim().length > 0) && (
+                                <button
+                                    className='post-btn'
+                                    onClick={() => handlePostComment(post.post_id)}
+                                >
+                                    Post
+                                </button>
+                                )} */}
+                                <button
+                                    className='post-btn'
+                                    onClick={() => handlePostComment(post.post_id)}
+                                    disabled={postingCommentId === post.post_id}
+                                    >
+                                    {postingCommentId === post.post_id ? 'Posting...' : 'Post'}
+                                </button>
+
+
                         </div>
                         <div className='border'></div>
                         
                         <div>
                             {
-                                displayComments && comments?.comments?.map((comment)=>(
-                                    <>
-                                        <p>{comment.comment}</p>
-                                    </>
-                                ))
-                            }
+                                visibleCommentsPostId === post.post_id &&
+                                commentsByPostId[post.post_id]?.map((comment) => (
+                                <p key={comment.id}>{comment.comment}</p>
+                            ))}
+
 
                         </div>
                 </>

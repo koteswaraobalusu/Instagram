@@ -144,7 +144,7 @@ const UploadPost = () => {
                 </>
             ) : (
                 <>
-                <button className='post-btn' onClick={uploadMediaPosts}>Post</button>
+                <button className='upload-post-btn' onClick={uploadMediaPosts}>Post</button>
                 <div className='media-carousel'>
                     <button className='nav-button' onClick={showPrevious}>
                     <img src={arrow_left_logo} alt='left-arrow'/>
